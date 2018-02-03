@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+  - name: install aptitude
+    shell: apt -y install aptitude
+    become: yes
+  ## http://docs.ansible.com/ansible/latest/apt_module.html
+  - name: apt update
+    apt: update_cache=yes upgrade=yes autoremove=yes autoclean=yes
+    become: yes
