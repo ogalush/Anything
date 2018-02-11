@@ -1,0 +1,37 @@
+## Terminal color
+## apt-get -y install ncurses-term
+term xterm-256color
+
+## screen title
+shelltitle "Liva"
+
+# 可視ベルOFF
+vbel off
+
+# ハングアップ時に自動デタッチ
+autodetach on
+
+# スクロールバッファの大きさ：10万行
+defscrollback 100000
+
+# キーバインドの変更 [ Ctrl+a --> Ctrl+z ]
+escape "^Zz"
+
+# 背景色消去
+defbce "on"
+
+encoding utf-8 utf-8
+defencoding utf-8
+
+# defhstatus "$USER@^EH_^En ^Et -- ^EW"
+# 下の方に時刻が表示されるようになる。
+hardstatus alwayslastline "%{= Gk} %-Lw%40L>%{b kg} %n %t %{-}%+Lw%-040=%{b km} %l %{.b} %Y/%m/%d %C:%s %A"
+
+# 縦分割
+sorendition "= Rk"
+
+## login shell
+## http://iandeth.dyndns.org/mt/ian/archives/000646.html
+##shelltitle "$ |$SHELL"
+
+startup_message off
