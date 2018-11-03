@@ -1,5 +1,5 @@
-# HDDをフォーマットさせる (2TB Over, GPT)
-今までfdiskを使用していたが、MBRの制約で2TBまでしか対応していないとのことなのでGPTを使用する.  
+# HDDをフォーマットする (2TB Over, GPT)
+今までfdiskを使用していたが、MBRの制約で2TBまでの対応ということなのでGPTを使用する.  
 参考: [大容量HDDをparted (GNU Parted)でフォーマットして使えるようにする手順](http://www.lesstep.jp/step_on_board/linux/214/)
 ## 環境
 Ubuntu 16.04
