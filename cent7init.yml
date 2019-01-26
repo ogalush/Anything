@@ -5,6 +5,7 @@
     dot_files:
       - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
       - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.gitconfig", dest: "/home/ogalush/.gitconfig", mode: 644, owner: "ogalush", group: "ogalush"}
   tasks:
   - name: Add Groups
     group:
