@@ -49,10 +49,24 @@
       - zsh
       - vim
       - screen
-      - git
       - traceroute
       - nmap
       - iotop
+      - telnet
+      - psmisc
+      - lsof
+      - dstat
+      - mtr
+      - tcpdump
+      - strace
+      - fio
+      - net-snmp
+      - net-snmp-utils
+      - git
+      - sysstat
+      - ansible
+      ## Packages http://blog.father.gedow.net/2012/10/23/linux-command-for-trouble/
+      ## snmp http://d.hatena.ne.jp/kt_hiro/20150923/1443012574
   - name: Eneble Daemons
     systemd:
       name: "{{ item }}.service"
@@ -60,3 +74,5 @@
       state: restarted
     with_items: 
      - ntpd
+     - sysstat
+     - snmpd
