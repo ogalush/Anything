@@ -1,0 +1,61 @@
+- hosts: all
+  vars:
+    ssh_users:
+      - { name: "ogalush", uid: 1001, gid: 1001, pw: "$6$testtest$5txpZMim8XzgmQ8V0DPQvomReE6CJRHfSQ1gSkhAlsWTqRGY.MqHAVNkW8dc6LbPAZLsiXxl4Ju59YUvCrBen1", keyfile: "/home/ogalush/.ssh/authorized_keys" }
+    dot_files:
+      - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
+  tasks:
+  - name: Add Groups
+    group:
+      name: "{{ item.name }}"
+      gid: "{{ item.gid }}"
+    with_items: "{{ ssh_users }}"
+  - name: Add Users
+    user:
+      name: "{{ item.name }}"
+      uid: "{{ item.uid }}"
+      group: "{{ item.name }}"
+      groups: wheel
+      password: "{{ item.pw }}"
+      createhome: yes
+    with_items: "{{ ssh_users }}"
+  - name: Set authorized_keys from File
+    authorized_key:
+      user: "{{ item.name }}"
+      state: present
+      key: "{{ lookup('file', item.keyfile) }}"
+    with_items: "{{ ssh_users }}"
+  - name: set DotFiles
+    copy:
+      src:   "{{ item.src }}"
+      dest:  "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items: "{{ dot_files }}"
+  - name: Update OS
+    yum: name=* state=latest
+    become: yes
+    ## https://qiita.com/moiwasaki/items/689094df944027f9c38f
+  - name: Install Packages
+    yum: name={{item}} state=latest
+    become: yes
+    with_items: 
+      - ntp
+      - ntpdate
+      - net-tools
+      - bind-utils
+      - zsh
+      - vim
+      - screen
+      - git
+      - traceroute
+      - nmap
+      - iotop
+  - name: Eneble Daemons
+    systemd:
+      name: "{{ item }}.service"
+      enabled: yes
+      state: restarted
+    with_items: 
+     - ntpd
