@@ -27,13 +27,18 @@
       state: present
       key: "{{ lookup('file', item.keyfile) }}"
     with_items: "{{ ssh_users }}"
-  - name: set DotFiles
+  - name: Set DotFiles
     copy:
       src:   "{{ item.src }}"
       dest:  "{{ item.dest }}"
       owner: "{{ item.owner }}"
       group: "{{ item.group }}"
     with_items: "{{ dot_files }}"
+  - name: Set Locale (UTC->JST)
+    shell: "{{item}}"
+    become: yes
+    with_items:
+      - /usr/bin/timedatectl set-timezone Asia/Tokyo
   - name: Update OS
     yum: name=* state=latest
     become: yes
