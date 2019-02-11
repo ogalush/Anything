@@ -34,11 +34,13 @@
       owner: "{{ item.owner }}"
       group: "{{ item.group }}"
     with_items: "{{ dot_files }}"
-  - name: Set Locale (UTC->JST)
+  - name: Set OS Settings.
     shell: "{{item}}"
     become: yes
     with_items:
       - /usr/bin/timedatectl set-timezone Asia/Tokyo
+      - /usr/sbin/setenforce 0
+      - /usr/bin/sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
   - name: Update OS
     yum: name=* state=latest
     become: yes
