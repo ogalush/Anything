@@ -1,7 +1,7 @@
 - hosts: all
   tasks:
   - name: Install aptitude
-    shell: apt -y install aptitude
+    shell: apt -y install aptitude python
     become: yes
   ## http://docs.ansible.com/ansible/latest/apt_module.html
   - name: OS Update
@@ -10,9 +10,7 @@
     tags: os_update
 
   - name: install Packages
-    apt: name={{item}}
-    with_items: 
-      - ntp
-      - ntpdate
+    apt:
+     name: ['ntp', 'ntpdate']
     tags: install_packages
     become: yes
