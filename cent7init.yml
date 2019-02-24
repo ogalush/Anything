@@ -2,6 +2,7 @@
   vars:
     ssh_users:
       - { name: "ogalush", uid: 1001, gid: 1001, pw: "$6$testtest$5txpZMim8XzgmQ8V0DPQvomReE6CJRHfSQ1gSkhAlsWTqRGY.MqHAVNkW8dc6LbPAZLsiXxl4Ju59YUvCrBen1", keyfile: "/home/ogalush/.ssh/authorized_keys" }
+      - { name: "tendo", uid: 1011, gid: 1011, pw: "$6$testtest$ZhkCNjAyGvDSaqAuzScAS5EWblP.MikFo1hoGHPbRmMujFTu6o1LT3MezAnb.BP4TXl11qUaKKkYeWT671lQq0", keyfile: "/home/tendo/.ssh/authorized_keys" }
     dot_files:
       - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
       - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
@@ -72,6 +73,7 @@
       - git
       - sysstat
       - ansible
+      - wget
       ## Packages http://blog.father.gedow.net/2012/10/23/linux-command-for-trouble/
       ## snmp http://d.hatena.ne.jp/kt_hiro/20150923/1443012574
   - name: Eneble Daemons
