@@ -1,0 +1,177 @@
+- hosts: all
+  vars:
+    ssh_users:
+      - { name: "ogalush", uid: 1001, gid: 1001, pw: "$6$testtest$5txpZMim8XzgmQ8V0DPQvomReE6CJRHfSQ1gSkhAlsWTqRGY.MqHAVNkW8dc6LbPAZLsiXxl4Ju59YUvCrBen1", keyfile: "/home/ogalush/.ssh/authorized_keys", loginshell: '/bin/bash' }
+      - { name: "tendo", uid: 1011, gid: 1011, pw: "$6$testtest$ZhkCNjAyGvDSaqAuzScAS5EWblP.MikFo1hoGHPbRmMujFTu6o1LT3MezAnb.BP4TXl11qUaKKkYeWT671lQq0", keyfile: "/home/tendo/.ssh/authorized_keys", loginshell: '/usr/bin/zsh'}
+    dot_files:
+      - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.gitconfig", dest: "/home/ogalush/.gitconfig", mode: 644, owner: "ogalush", group: "ogalush"}
+
+  tasks:
+  - name: setUserGroups
+    group:
+      name: "{{ item.name }}"
+      gid: "{{ item.gid }}"
+    with_items: "{{ ssh_users }}"
+    tags: setUserGroups
+  - name: setUsers
+    user:
+      name: "{{ item.name }}"
+      uid: "{{ item.uid }}"
+      group: "{{ item.name }}"
+      password: "{{ item.pw }}"
+      createhome: yes
+      shell: "{{ item.loginshell }}"
+    with_items: "{{ ssh_users }}"
+    tags: setUsers
+
+  - name: setSudoUsers For CentOS
+    user:
+      name: "{{item.name}}"
+      append: yes
+      groups: wheel
+    with_items: "{{ ssh_users }}"
+    when:
+      - ansible_distribution == "CentOS"
+
+  - name: setSudoUsers For Ubuntu
+    user:
+      name: "{{item.name}}"
+      append: yes
+      groups: adm,sudo
+    with_items: "{{ ssh_users }}"
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Set authorized_keys from File
+    authorized_key:
+      user: "{{ item.name }}"
+      state: present
+      key: "{{ lookup('file', item.keyfile) }}"
+      manage_dir: yes
+    with_items: "{{ ssh_users }}"
+    tags: setAuthrizedKeys
+
+  - name: Set DotFiles
+    copy:
+      src:   "{{ item.src }}"
+      dest:  "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items: "{{ dot_files }}"
+    tags: setDotFiles
+
+  - name: Set OS Settings.
+    tags: setOsSettings
+    become: yes
+    shell: "{{item}}"
+    with_items:
+      - /usr/bin/timedatectl set-timezone Asia/Tokyo
+      - /usr/sbin/setenforce 0
+      - /usr/bin/sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
+    when:
+      - ansible_distribution == "CentOS"
+
+  - name: Update OS
+    yum: name=* state=latest
+    become: yes
+    ## https://qiita.com/moiwasaki/items/689094df944027f9c38f
+    when:
+      - ansible_distribution == "CentOS"
+
+    ## Packages http://blog.father.gedow.net/2012/10/23/linux-command-for-trouble/
+    ## snmp http://d.hatena.ne.jp/kt_hiro/20150923/1443012574
+  - name: Install Packages for CentOS
+    tags: installOsPackages
+    yum: name={{item}} state=latest
+    with_items: 
+      - ntp
+      - ntpdate
+      - net-tools
+      - bind-utils
+      - zsh
+      - vim
+      - screen
+      - traceroute
+      - nmap
+      - iotop
+      - telnet
+      - psmisc
+      - lsof
+      - dstat
+      - mtr
+      - tcpdump
+      - strace
+      - fio
+      - net-snmp
+      - net-snmp-utils
+      - git
+      - sysstat
+      - ansible
+      - wget
+    when:
+      - ansible_distribution == "CentOS"
+
+  - name: Eneble Daemons
+    tags: enableDaemons
+    systemd:
+      name: "{{ item }}.service"
+      enabled: yes
+      state: restarted
+    with_items: 
+     - ntpd
+     - sysstat
+     - snmpd
+    when:
+      - ansible_distribution == "CentOS"
+
+  - name: set OS Settings
+    tags: setOSSettings
+    become: yes
+    shell: 'timedatectl set-timezone Asia/Tokyo'
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Install Ubuntu Packages.
+    become: yes
+    apt:
+      name:
+        - ansible
+        - aptitude
+        - automake
+        - cpufreqd
+        - cpufrequtils
+        - dstat
+        - fio
+        - git
+        - iotop
+        - lsof
+        - make
+        - net-tools
+        - nmap
+        - ntp
+        - ntpdate
+        - openssh-server
+        - psmisc
+        - screen
+        - snmp
+        - strace
+        - sysstat
+        - tcpdump
+        - telnet
+        - traceroute
+        - vim
+        - wget
+        - whois
+        - zsh
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Update Ubuntu OS.
+    become: yes
+    apt:
+      upgrade: yes
+      update_cache: yes
+    when:
+      - ansible_distribution == "Ubuntu"
