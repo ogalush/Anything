@@ -1,3 +1,5 @@
+## CommandLine
+## $ ansible-playbook -i "192.168.0.200," initialize_instance.yml --user=ubuntu -k -bK
 - hosts: all
   vars:
     ssh_users:
