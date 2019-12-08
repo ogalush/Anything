@@ -8,7 +8,7 @@ import getpass
 
 def execbackup():
   sudo('mkdir -vp /mnt/nas', pty=True)
-  sudo('mount -t nfs 192.168.0.248:/linux /mnt/nas', pty=True)
+  sudo('mount -t nfs 192.168.3.248:/linux /mnt/nas', pty=True)
   sudo('mkdir -vp /mnt/nas/' + env.host, pty=True)
   sudo('rsync -rOtcvz --delete --verbose /home /mnt/nas/' + env.host, pty=True)
   sudo('rsync -rOtcvz --delete --verbose /etc /mnt/nas/' + env.host, pty=True)
@@ -18,7 +18,7 @@ def execbackup():
 
 def execbackupliva():
   sudo('mkdir -vp /mnt/nas', pty=True)
-  sudo('mount -t nfs 192.168.0.248:/linux /mnt/nas', pty=True)
+  sudo('mount -t nfs 192.168.3.248:/linux /mnt/nas', pty=True)
   sudo('mkdir -vp /mnt/nas/liva', pty=True)
   sudo('rsync -rOtcvz --delete --verbose /home /mnt/nas/liva', pty=True)
   sudo('rsync -rOtcvz --delete --verbose /etc /mnt/nas/liva', pty=True)
