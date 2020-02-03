@@ -51,7 +51,6 @@
     become: yes
     with_items: 
       - ntp
-      - ntpdate
       - net-tools
       - bind-utils
       - zsh

@@ -89,7 +89,6 @@
     yum: name={{item}} state=latest
     with_items: 
       - ntp
-      - ntpdate
       - net-tools
       - bind-utils
       - zsh
@@ -153,7 +152,6 @@
         - net-tools
         - nmap
         - ntp
-        - ntpdate
         - openssh-server
         - psmisc
         - screen

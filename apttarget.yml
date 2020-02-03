@@ -11,6 +11,6 @@
 
   - name: install Packages
     apt:
-     name: ['ntp', 'ntpdate']
+     name: ['ntp']
     tags: install_packages
     become: yes
