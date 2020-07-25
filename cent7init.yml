@@ -27,6 +27,7 @@
       user: "{{ item.name }}"
       state: present
       key: "{{ lookup('file', item.keyfile) }}"
+      manage_dir: yes
     with_items: "{{ ssh_users }}"
   - name: Set DotFiles
     copy:
@@ -71,7 +72,6 @@
       - net-snmp-utils
       - git
       - sysstat
-      - ansible
       - wget
       ## Packages http://blog.father.gedow.net/2012/10/23/linux-command-for-trouble/
       ## snmp http://d.hatena.ne.jp/kt_hiro/20150923/1443012574
