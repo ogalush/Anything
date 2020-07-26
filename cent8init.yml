@@ -1,0 +1,64 @@
+- hosts: all
+  vars:
+    ssh_users:
+      - { name: "ogalush", uid: 1001, gid: 1001, pw: "$6$testtest$5txpZMim8XzgmQ8V0DPQvomReE6CJRHfSQ1gSkhAlsWTqRGY.MqHAVNkW8dc6LbPAZLsiXxl4Ju59YUvCrBen1", keyfile: "/home/ogalush/.ssh/authorized_keys" }
+      - { name: "tendo", uid: 1011, gid: 1011, pw: "$6$testtest$ZhkCNjAyGvDSaqAuzScAS5EWblP.MikFo1hoGHPbRmMujFTu6o1LT3MezAnb.BP4TXl11qUaKKkYeWT671lQq0", keyfile: "/home/tendo/.ssh/authorized_keys" }
+    dot_files:
+      - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
+      - { src: "/home/ogalush/.gitconfig", dest: "/home/ogalush/.gitconfig", mode: 644, owner: "ogalush", group: "ogalush"}
+  tasks:
+  - name: Add Groups
+    group:
+      name: "{{ item.name }}"
+      gid: "{{ item.gid }}"
+    with_items: "{{ ssh_users }}"
+  - name: Add Users
+    user:
+      name: "{{ item.name }}"
+      uid: "{{ item.uid }}"
+      group: "{{ item.name }}"
+      groups: wheel
+      password: "{{ item.pw }}"
+      createhome: yes
+    with_items: "{{ ssh_users }}"
+  - name: Set authorized_keys from File
+    authorized_key:
+      user: "{{ item.name }}"
+      state: present
+      key: "{{ lookup('file', item.keyfile) }}"
+      manage_dir: yes
+    with_items: "{{ ssh_users }}"
+  - name: Set DotFiles
+    copy:
+      src:   "{{ item.src }}"
+      dest:  "{{ item.dest }}"
+      owner: "{{ item.owner }}"
+      group: "{{ item.group }}"
+    with_items: "{{ dot_files }}"
+  - name: Set OS Settings.
+    shell: "{{item}}"
+    become: yes
+    with_items:
+      - /usr/bin/timedatectl set-timezone Asia/Tokyo
+      - /usr/sbin/setenforce 0
+      - /usr/bin/sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
+  - name: Update OS
+    dnf:
+      name: "*"
+      state: latest
+    become: yes
+  - name: Install Packages
+    dnf: 
+      name: "epel-release,chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget"
+      state: latest
+    become: yes
+  - name: Eneble Daemons
+    systemd:
+      name: "{{ item }}.service"
+      enabled: yes
+      state: restarted
+    with_items: 
+     - chronyd
+     - sysstat
+     - snmpd
