@@ -50,7 +50,7 @@
     become: yes
   - name: Install Packages
     dnf: 
-      name: "epel-release,chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget"
+      name: "epel-release,chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget,iftop"
       state: latest
     become: yes
   - name: Eneble Daemons
