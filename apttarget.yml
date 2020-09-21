@@ -1,16 +1,32 @@
 - hosts: all
+  gather_facts: no
   tasks:
-  - name: Install aptitude
+  - name: "Install aptitude"
     shell: apt -y install aptitude python
     become: yes
+
   ## http://docs.ansible.com/ansible/latest/apt_module.html
-  - name: OS Update
+  - name: "Update OS"
     apt: update_cache=yes upgrade=yes autoremove=yes autoclean=yes
     become: yes
     tags: os_update
 
-  - name: install Packages
+  - name: "install Packages"
     apt:
-     name: ['ntp']
+     name: ['chrony']
     tags: install_packages
+    become: yes
+
+  - name: "Configure NTP"
+    replace:
+      dest: '/etc/chrony/chrony.conf'
+      regexp: '^pool 0\.ubuntu\.pool\.ntp\.org iburst maxsources 1$'
+      replace: 'pool ntp.nict.jp iburst maxsources 2'
+    become: yes
+
+  - name: "Apply NTP"
+    systemd:
+      name: 'chrony'
+      state: 'restarted'
+      enabled: 'yes'
     become: yes
