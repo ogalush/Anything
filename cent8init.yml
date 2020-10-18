@@ -48,6 +48,7 @@
       name: "*"
       state: latest
     become: yes
+    tags: "dnf_update"
   - name: Install epel repo.
     dnf: 
       name: "epel-release"

@@ -8,6 +8,12 @@ ansible-playbook -i '192.168.3.200,' cent8init.yml --user=root --become -bkK
 ## $ sudo su -
 ## $ passwd centos
 ## → CentOSアカウントのパスワード初期化
-## $ ansible-playbook -i '192.168.0.103,' cent7init.yml --user=centos --become -K --private-key=~/.ssh/id_rsa_chef
+## $ ansible-playbook -i '192.168.3.200,' cent8init.yml --user=centos --become -K --list-hosts
+## $ ansible-playbook -i '192.168.3.200,' cent8init.yml --user=centos --become -K
+
+## Only OS Update
+## ansible-playbook -i '192.168.3.200,' cent8init.yml --become -bK --skip-tags='*' --tags='dnf_update' --list-tags
+## ansible-playbook -i '192.168.3.200,' cent8init.yml --become -bK --skip-tags='*' --tags='dnf_update' --list-hosts
+## ansible-playbook -i '192.168.3.200,' cent8init.yml --become -bK --skip-tags='*' --tags='dnf_update'
 set +x
 
