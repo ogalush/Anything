@@ -166,7 +166,9 @@ $ sudo reboot
 - F2するとSMPでマルチコアを使ってテストしてくれる（早い）
 - 途中終了はESCで抜けられる.
 ```
-
+動作イメージ  
+![MemTest86+入りgrub2画面](https://raw.githubusercontent.com/ogalush/Anything/master/images/memtest86-grub2.png)  
+![Memtest86+動作画面](https://raw.githubusercontent.com/ogalush/Anything/master/images/memtest86-testimage.png) 
 
 ## Disk
 * [hdparm](http://naoberry.com/tech/hdparm/)  
