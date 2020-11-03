@@ -1,5 +1,13 @@
 # 性能テストに利用できそうなツール群
 特に断りがない限りはCentOS7〜8, Ubuntu20界隈の想定.
+## 環境
+[InstallUssuriForCentOS8](https://github.com/ogalush/Documents/blob/master/InstallUssuriForCentOS8.md)で構築した物理機とVM
+* 物理  
+CentOS8
+* VM  
+Ubuntu20.04
+* その他(踏み台)  
+Ubuntu 18.04
 
 ## CPU
 * [姫野ベンチマーク](http://i.riken.jp/supercom/documents/himenobmt/)  
