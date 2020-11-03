@@ -4,6 +4,71 @@
 ## CPU
 * [姫野ベンチマーク](http://i.riken.jp/supercom/documents/himenobmt/)  
 使い方は[姫野ベンチの使用方法・測定結果一覧 （Linux編）](https://hesonogoma.com/linux/usageofhimenobench.html)参照
+```
+・ダウンロード
+ogalush@ubuntu20:/tmp$ wget -q -O /tmp/himenobmt_c_mpi.zip http://i.riken.jp/en/wp-content/uploads/sites/2/2015/07/himenobmt_c_mpi.zip
+ogalush@ubuntu20:/tmp$ ls -l /tmp/himenobmt_c_mpi.zip 
+-rw-rw-r-- 1 ogalush ogalush 3011 Jul  9  2015 /tmp/himenobmt_c_mpi.zip
+
+・解凍
+ogalush@ubuntu20:/tmp$ sudo apt -y install unzip lhasa
+ogalush@ubuntu20:/tmp$ unzip /tmp/himenobmt_c_mpi.zip 
+Archive:  /tmp/himenobmt_c_mpi.zip
+ extracting: himenobmt_c_mpi.lzh     
+ogalush@ubuntu20:/tmp$
+ogalush@ubuntu20:/tmp$ lha /tmp/himenobmt_c_mpi.lzh
+ PERMSSN    UID  GID      SIZE  RATIO     STAMP           NAME
+---------- ----------- ------- ------ ------------ --------------------
+-rw-rw-rw-  1001/1000      286  58.7% Jul 12  1999 Makefile
+-rw-rw-rw-  1001/1000     7778  32.9% Jul 12  1999 himenoBMT_m.c
+---------- ----------- ------- ------ ------------ --------------------
+ Total         2 files    8064  33.8% Jun 10  2015
+ogalush@ubuntu20:/tmp$ 
+ogalush@ubuntu20:/tmp$ lhasa -x /tmp/himenobmt_c_mpi.lzh 
+Makefile        - Melted   :  o
+himenoBMT_m.c   - Melted   :  o
+ogalush@ubuntu20:/tmp$ 
+
+・ファイル移動
+/usr/local/src下で利用したかったため.
+$ sudo mkdir -pv /usr/local/src/himenobmt_c_mpi
+$ sudo chown -v ${USER} /usr/local/src/himenobmt_c_mpi
+changed ownership of '/usr/local/src/himenobmt_c_mpi' from root to ogalush
+$ sudo mv -v /tmp/Makefile /usr/local/src/himenobmt_c_mpi/
+renamed '/tmp/Makefile' -> '/usr/local/src/himenobmt_c_mpi/Makefile'
+$ sudo mv -v /tmp/himenoBMT_m.c /usr/local/src/himenobmt_c_mpi/
+renamed '/tmp/himenoBMT_m.c' -> '/usr/local/src/himenobmt_c_mpi/himenoBMT_m.c'
+
+・コンパイル
+$ sudo apt -y install mpi-default-dev
+$ cd /usr/local/src/himenobmt_c_mpi
+$ make
+mpicc -c -O3 -DSMALL himenoBMT_m.c
+mpicc -o bmt himenoBMT_m.o -O3 -DSMALL
+$ ls -l
+total 52
+-rw-rw-rw- 1 ogalush ogalush   286 Jul 12  1999 Makefile
+-rwxrwxr-x 1 ogalush ogalush 21824 Nov  3 20:47 bmt
+-rw-rw-rw- 1 ogalush ogalush  7778 Jul 12  1999 himenoBMT_m.c
+-rw-rw-r-- 1 ogalush ogalush 12456 Nov  3 20:47 himenoBMT_m.o
+→ bmtコマンドが出来上がればOK.
+
+・計測
+-----
+ogalush@ubuntu20:/usr/local/src/himenobmt_c_mpi$ ./bmt 
+1 node used. 
+mimax = 65 mjmax = 65 mkmax = 129
+imax = 64 jmax = 64 kmax =128
+cpu : 1.028590 sec.
+Loop executed for 200 times
+Gosa : 1.688606e-03 
+MFLOPS measured : 3201.993813
+Score based on MMX Pentium 200MHz : 99.225095
+ogalush@ubuntu20:/usr/local/src/himenobmt_c_mpi$
+→ MMX Pentium比でのスコア値が出る.
+-----
+```
+
 ## Memory
 * [memtester]
 簡易確認向け.  
@@ -176,8 +241,6 @@ Num  Test_Description    Status                  Remaining  LifeTime(hours)  LBA
 → エラー無し結果.
 エラーがあると別な表示になる.
 ----
-
-
 ```
 ## Network
 * iperf/iperf3
