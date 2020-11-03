@@ -1,5 +1,5 @@
 ## CommandLine
-## $ ansible-playbook -i "192.168.0.200," initialize_instance.yml --user=ubuntu -k -bK
+## $ ansible-playbook -i "192.168.3.200," initialize_instance.yml --user=ubuntu -k -bK
 - hosts: all
   vars:
     ssh_users:
@@ -166,6 +166,7 @@
         - whois
         - zsh
         - wakeonlan
+        - iperf
     when:
       - ansible_distribution == "Ubuntu"
 
