@@ -122,6 +122,51 @@ ogalush@ubuntu20:~$
 MemTest86の拡張版らしい.  
 yum install後にgrubで選択してテストする.  
 使い方は[memtest86+でメモリをテストする。](https://www.dogrow.net/linux/blog48/)参照
+```
+・インストール
+ogalush@ubuntu20:~$ sudo apt -y install memtest86+
+→ /bootのKernelimageまではいるのでOK.
+
+・設定
+VM起動時にgrub2画面が見えないためタイムアウト設定
+----
+$ sudo cp -pv /etc/default/grub.d/50-cloudimg-settings.cfg ~
+$ diff --unified=0 ~/50-cloudimg-settings.cfg /etc/default/grub.d/50-cloudimg-settings.cfg
+--- /home/ogalush/50-cloudimg-settings.cfg      2020-04-29 06:42:42.100884944 +0900
++++ /etc/default/grub.d/50-cloudimg-settings.cfg        2020-11-03 21:20:38.391119711 +0900
+@@ -8 +8,2 @@
+-GRUB_TIMEOUT=0
++GRUB_TIMEOUT_STYLE=menu
++GRUB_TIMEOUT=5
+----
+→ grub非表示(hidden)→表示(menu)
+タイムアウト秒数 0 → 5秒
+
+・反映
+$ sudo update-grub2
+Sourcing file `/etc/default/grub'
+Sourcing file `/etc/default/grub.d/40-force-partuuid.cfg'
+Sourcing file `/etc/default/grub.d/50-cloudimg-settings.cfg'
+Sourcing file `/etc/default/grub.d/init-select.cfg'
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-5.4.0-52-generic
+Found initrd image: /boot/initrd.img-5.4.0-52-generic
+Found linux image: /boot/vmlinuz-5.4.0-47-generic
+Found initrd image: /boot/initrd.img-5.4.0-47-generic
+Found memtest86+ image: /boot/memtest86+.elf
+Found memtest86+ image: /boot/memtest86+.bin
+done
+ogalush@ubuntu20:~$
+
+・再起動
+$ sudo reboot
+
+・grubメニュー
+- 「Memory teset (memtest86+」を選択
+- F2するとSMPでマルチコアを使ってテストしてくれる（早い）
+- 途中終了はESCで抜けられる.
+```
+
 
 ## Disk
 * [hdparm](http://naoberry.com/tech/hdparm/)  
