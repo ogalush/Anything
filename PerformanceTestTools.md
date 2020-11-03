@@ -73,10 +73,43 @@ ogalush@ubuntu20:~$ sudo hdparm -tT /dev/vda1
  Timing buffered disk reads: 768 MB in  3.00 seconds = 255.76 MB/sec
 ogalush@ubuntu20:~$
 ```
-* [smartmontools](https://www.space-i.com/post-blog/smartmontools-dell-poweredge/)
+* [smartmontools](https://www.space-i.com/post-blog/smartmontools-dell-poweredge/)  
 RAIDカードのあるサーバなどはこの辺で実施すると便利っぽい.
 ```
-ogalush@ubuntu20:~$ sudo apt -y install smartmontools
+[ogalush@ryunosuke ~]$ sudo dnf -q -y install smartmontools
+[ogalush@ryunosuke ~]$ rpm -q smartmontools
+smartmontools-6.6-3.el8.x86_64
+[ogalush@ryunosuke ~]$
+
+SMART情報表示とselftest
+----
+[ogalush@ryunosuke ~]$ sudo smartctl -a /dev/sda |head -n 21
+smartctl 6.6 2017-11-05 r4594 [x86_64-linux-4.18.0-193.28.1.el8_2.x86_64] (local build)
+Copyright (C) 2002-17, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Samsung based SSDs
+Device Model:     Samsung SSD 840 Series
+Serial Number:    S14GNEBCC12783N
+LU WWN Device Id: 5 002538 55011c5cb
+Firmware Version: DXT06B0Q
+User Capacity:    250,059,350,016 bytes [250 GB]
+Sector Size:      512 bytes logical/physical
+Rotation Rate:    Solid State Device
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ACS-2, ATA8-ACS T13/1699-D revision 4c
+SATA Version is:  SATA 3.1, 6.0 Gb/s (current: 3.0 Gb/s)
+Local Time is:    Tue Nov  3 18:19:33 2020 JST
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+[ogalush@ryunosuke ~]$
+----
+
+Diskテスト
+$ sudo smartctl -t short(long) /dev/sdhoge
 
 ```
 ## Network
