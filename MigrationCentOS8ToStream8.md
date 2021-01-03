@@ -4,6 +4,11 @@ CentOS8の開発方針が変更となり、CentOS8を2021/12/31に終了させ�
 
 今回は、既にインストールしているCentOS8からStream8へのマイグレーションを行う.  
 
+# 環境
+OpenStack Ussuri (Controller+ComputeNode) + CentOS8.  
+[Install OpenStack Ussuri on CentOS8](https://github.com/ogalush/Documents/blob/master/InstallUssuriForCentOS8.md)
+で作成した機材.
+
 # 手順
 参考: [Q7: How do I migrate my CentOS Linux 8 installation to CentOS Stream?](https://centos.org/distro-faq/#q7-how-do-i-migrate-my-centos-linux-8-installation-to-centos-stream)
 の方法を試す.
