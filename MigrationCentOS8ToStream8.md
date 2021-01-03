@@ -1,8 +1,8 @@
 # CentOS Linux 8からStream 8への移行方法
 CentOS8の開発方針が変更となり、CentOS8を2021/12/31に終了させて、CentOS Streamへ集中することとなった.  
-詳細は[CentOS Project shifts focus to CentOS Stream](https://blog.centos.org/2020/12/future-is-centos-stream/)参照.  
-
-今回は、既にインストールしているCentOS8からStream8へのマイグレーションを行う.  
+参考: [CentOS Project shifts focus to CentOS Stream](https://blog.centos.org/2020/12/future-is-centos-stream/)  
+  
+今回は、既にインストール済みのCentOS Linux 8から CentOS Stream 8へのマイグレーションをする.  
 
 # 環境
 OpenStack Ussuri (Controller+ComputeNode) + CentOS8.  
