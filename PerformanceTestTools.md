@@ -1,5 +1,13 @@
 # 性能テストに利用できそうなツール群
 特に断りがない限りはCentOS7〜8, Ubuntu20界隈の想定.
+## 環境
+[InstallUssuriForCentOS8](https://github.com/ogalush/Documents/blob/master/InstallUssuriForCentOS8.md)で構築した物理機とVM
+* 物理  
+CentOS8
+* VM  
+Ubuntu20.04
+* その他(踏み台)  
+Ubuntu 18.04
 
 ## CPU
 * [姫野ベンチマーク](http://i.riken.jp/supercom/documents/himenobmt/)  
@@ -166,7 +174,9 @@ $ sudo reboot
 - F2するとSMPでマルチコアを使ってテストしてくれる（早い）
 - 途中終了はESCで抜けられる.
 ```
-
+動作イメージ  
+![MemTest86+入りgrub2画面](https://raw.githubusercontent.com/ogalush/Anything/master/images/memtest86-grub2.png)  
+![Memtest86+動作画面](https://raw.githubusercontent.com/ogalush/Anything/master/images/memtest86-testimage.png) 
 
 ## Disk
 * [hdparm](http://naoberry.com/tech/hdparm/)  
