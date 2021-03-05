@@ -167,6 +167,8 @@
         - zsh
         - wakeonlan
         - iperf
+        - lm-sensors
+        - powertop
     when:
       - ansible_distribution == "Ubuntu"
 
