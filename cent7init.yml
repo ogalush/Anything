@@ -51,6 +51,7 @@
     yum: name={{item}} state=latest
     become: yes
     with_items: 
+      - epel-release
       - ntp
       - net-tools
       - bind-utils
