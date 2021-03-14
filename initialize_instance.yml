@@ -169,6 +169,7 @@
         - iperf
         - lm-sensors
         - powertop
+        - htop
     when:
       - ansible_distribution == "Ubuntu"
 
