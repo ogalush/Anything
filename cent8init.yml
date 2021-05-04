@@ -56,7 +56,7 @@
     become: yes
   - name: Install Packages
     dnf: 
-      name: "chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget,iftop,iperf3,lm_sensors,powertop,usbutils"
+      name: "chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget,iftop,iperf3,lm_sensors,powertop,usbutils,tree"
       state: latest
       enablerepo: "epel"
     become: yes
