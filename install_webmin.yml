@@ -1,0 +1,29 @@
+#Usage: $ ansible-playbook -i '192.168.3.145,' install_webmin.yml -bK
+- hosts: all
+  gather_facts: no
+  become: yes
+  tasks:
+    - name: "Set Webmin repos"
+      copy:
+        src:   '{{ item.src }}'
+        dest:  '{{ item.dest }}'
+        owner: '{{ item.owner }}'
+        group: '{{ item.group }}'
+        mode:  '{{ item.mode }}'
+      loop:
+        - { src: "webmin.repo", dest: "/etc/yum.repos.d/webmin.repo", owner: "root", group: "root", mode: "0644" }
+      ## https://www.webmin.com/rpm.html
+
+    - name: "Setup Webmin Package"
+      dnf:
+        name:
+          - perl
+          - webmin
+        state: present
+
+    - name: "Restart Webmin"
+      sysvinit:
+        name: webmin
+        state: restarted
+        enabled: yes
+
