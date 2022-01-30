@@ -7,12 +7,15 @@
       - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
       - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
       - { src: "/home/ogalush/.gitconfig", dest: "/home/ogalush/.gitconfig", mode: 644, owner: "ogalush", group: "ogalush"}
+
   tasks:
+
   - name: Add Groups
     group:
       name: "{{ item.name }}"
       gid: "{{ item.gid }}"
     with_items: "{{ ssh_users }}"
+
   - name: Add Users
     user:
       name: "{{ item.name }}"
@@ -22,6 +25,7 @@
       password: "{{ item.pw }}"
       createhome: yes
     with_items: "{{ ssh_users }}"
+
   - name: Set authorized_keys from File
     authorized_key:
       user: "{{ item.name }}"
@@ -29,6 +33,7 @@
       key: "{{ lookup('file', item.keyfile) }}"
       manage_dir: yes
     with_items: "{{ ssh_users }}"
+
   - name: Set DotFiles
     copy:
       src:   "{{ item.src }}"
@@ -36,6 +41,7 @@
       owner: "{{ item.owner }}"
       group: "{{ item.group }}"
     with_items: "{{ dot_files }}"
+
   - name: Set OS Settings.
     shell: "{{item}}"
     become: yes
@@ -43,23 +49,27 @@
       - /usr/bin/timedatectl set-timezone Asia/Tokyo
       - /usr/sbin/setenforce 0
       - /usr/bin/sed -i "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
+
   - name: Update OS
     dnf:
       name: "*"
       state: latest
     become: yes
     tags: "dnf_update"
+
   - name: Install epel repo.
     dnf: 
       name: "epel-release"
       state: latest
     become: yes
+
   - name: Install Packages
     dnf: 
       name: "chrony,net-tools,bind-utils,zsh,vim,screen,traceroute,nmap,iotop,telnet,psmisc,lsof,dstat,mtr,tcpdump,strace,fio,net-snmp,net-snmp-utils,git,sysstat,wget,iftop,iperf3,lm_sensors,powertop,usbutils,tree"
       state: latest
       enablerepo: "epel"
     become: yes
+
   - name: Eneble Daemons
     systemd:
       name: "{{ item }}.service"
@@ -69,3 +79,12 @@
      - chronyd
      - sysstat
      - snmpd
+
+  - name: Reboot OS
+    reboot:
+      reboot_timeout: 300
+    tags: "reboot_os"
+
+  - name: Debug
+    debug:
+        msg: Reboot OK.
