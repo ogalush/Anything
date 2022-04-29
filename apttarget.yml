@@ -2,7 +2,7 @@
   gather_facts: no
   tasks:
   - name: "Install aptitude"
-    shell: apt -y install aptitude python
+    shell: apt -y install aptitude
     become: yes
 
   ## http://docs.ansible.com/ansible/latest/apt_module.html
