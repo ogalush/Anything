@@ -5,13 +5,18 @@
     shell: apt -y install aptitude
     become: yes
 
-  ## http://docs.ansible.com/ansible/latest/apt_module.html
+  ## https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
   - name: "Update OS"
     apt: update_cache=yes upgrade=yes autoremove=yes autoclean=yes
     become: yes
     tags: os_update
 
-  - name: "install Packages"
+  - name: "Update OS dist-upgrade"
+    apt: update_cache=yes upgrade=dist autoremove=yes autoclean=yes
+    become: yes
+    tags: os_update
+
+  - name: "Install Packages"
     apt:
      name: ['chrony']
     tags: install_packages
