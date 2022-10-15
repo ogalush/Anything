@@ -134,6 +134,14 @@
     when:
       - ansible_distribution == "Ubuntu"
 
+  - name: Update Ubuntu OS.
+    become: yes
+    apt:
+      upgrade: yes
+      update_cache: yes
+    when:
+      - ansible_distribution == "Ubuntu"
+
   - name: Install Ubuntu Packages.
     become: yes
     apt:
@@ -173,10 +181,3 @@
     when:
       - ansible_distribution == "Ubuntu"
 
-  - name: Update Ubuntu OS.
-    become: yes
-    apt:
-      upgrade: yes
-      update_cache: yes
-    when:
-      - ansible_distribution == "Ubuntu"
