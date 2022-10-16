@@ -5,7 +5,8 @@ set -x
 wget --user=ftp --password=ftp ftp://ftp.rs.internic.net/domain/db.cache -O ~/db.root
 chmod -v 644 ~/db.root
 
-sudo cp -v ~/db.root /etc/bind/db.root
+sudo rm -v /etc/bind/db.root
+sudo mv -v ~/db.root /etc/bind/db.root
 sudo rndc reload
 
 set +x
