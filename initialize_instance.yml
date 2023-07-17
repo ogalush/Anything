@@ -111,6 +111,7 @@
       - sysstat
       - ansible
       - wget
+      - yum-utils
     when:
       - ansible_distribution == "CentOS"
 
@@ -178,6 +179,7 @@
         - lm-sensors
         - powertop
         - htop
+        - debian-goodies
     when:
       - ansible_distribution == "Ubuntu"
 
