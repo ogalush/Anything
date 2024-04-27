@@ -150,7 +150,6 @@
         - ansible
         - aptitude
         - automake
-        - cpufreqd
         - cpufrequtils
         - dstat
         - fio
@@ -183,3 +182,33 @@
     when:
       - ansible_distribution == "Ubuntu"
 
+  - name: Disable systemd-resolved 127.0.0.53 for Ubuntu.
+    ## Ref https://blog.jicoman.info/2020/06/how-to-resolve-problem-of-name-resolution-to-local-on-ubuntu-2004/
+    ## Ref https://qiita.com/asterisk9101/items/ecf2d9a509ded6838dc5
+    lineinfile: >-
+      dest='/etc/systemd/resolved.conf'
+      state=present
+      backrefs=no
+      regexp='{{ item.regexp }}'
+      line='{{ item.line }}'
+    with_items:
+    - regexp: '^#?DNSStubListener=yes'
+      line: 'DNSStubListener=no'
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Change resolve.conf
+    file:
+      src: "/run/systemd/resolve/resolv.conf"
+      dest: "/etc/resolv.conf"
+      state: link
+      force: true
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Apply systemd-resolved.service
+    systemd:
+      name: "systemd-resolved.service"
+      state: "restarted"
+    when:
+      - ansible_distribution == "Ubuntu"
