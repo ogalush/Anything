@@ -1,0 +1,36 @@
+- hosts: all
+
+## Example
+## $ ansible-playbook -i "192.168.64.4," ./install_docker.yml -bkK --check --diff
+## $ ansible-playbook -i "192.168.64.4," ./install_docker.yml -bkK
+
+## Ref
+## https://www.server-world.info/query?os=CentOS_Stream_9&p=docker&f=1
+
+  tasks:
+  - name: "Remove rpms"
+    dnf:
+      name: "{{ item }}"
+      state: "absent"
+    with_items:
+    -  "podman"
+    -  "runc"
+
+
+  - name: "Disable docker-ce repo"
+    lineinfile:
+      path: /etc/yum.repos.d/docker-ce.repo
+      regexp: '^enabled=1'
+      line: 'enabled=0'
+
+  - name: "Install Docker"
+    dnf:
+      name: "docker-ce"
+      enablerepo: "docker-ce-stable"
+      state: "present"
+
+  - name: "Enable Docker"
+    systemd:
+      name: "docker"
+      state: "started"
+      enabled: true
