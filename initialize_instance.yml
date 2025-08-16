@@ -4,7 +4,6 @@
   vars:
     ssh_users:
       - { name: "ogalush", uid: 1001, gid: 1001, pw: "$6$testtest$5txpZMim8XzgmQ8V0DPQvomReE6CJRHfSQ1gSkhAlsWTqRGY.MqHAVNkW8dc6LbPAZLsiXxl4Ju59YUvCrBen1", keyfile: "/home/ogalush/.ssh/authorized_keys", loginshell: '/bin/bash' }
-      - { name: "tendo", uid: 1011, gid: 1011, pw: "$6$testtest$ZhkCNjAyGvDSaqAuzScAS5EWblP.MikFo1hoGHPbRmMujFTu6o1LT3MezAnb.BP4TXl11qUaKKkYeWT671lQq0", keyfile: "/home/tendo/.ssh/authorized_keys", loginshell: '/usr/bin/zsh'}
     dot_files:
       - { src: "/home/ogalush/.vimrc", dest: "/home/ogalush/.vimrc", mode: 644, owner: "ogalush", group: "ogalush"}
       - { src: "/home/ogalush/.screenrc", dest: "/home/ogalush/.screenrc", mode: 644, owner: "ogalush", group: "ogalush"}
