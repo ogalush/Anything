@@ -158,7 +158,6 @@
         - make
         - net-tools
         - nmap
-        - ntp
         - openssh-server
         - psmisc
         - screen
@@ -209,5 +208,12 @@
     systemd:
       name: "systemd-resolved.service"
       state: "restarted"
+    when:
+      - ansible_distribution == "Ubuntu"
+
+  - name: Set default editor to vim.basic
+    become: true
+    command:
+      cmd: update-alternatives --set editor /usr/bin/vim.basic
     when:
       - ansible_distribution == "Ubuntu"
