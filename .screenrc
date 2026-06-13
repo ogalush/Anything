@@ -3,7 +3,7 @@
 term xterm-256color
 
 ## screen title
-shelltitle "Liva"
+shelltitle "pn42"
 
 # 可視ベルOFF
 vbel off
